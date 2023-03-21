@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog logicalFilePath="db" xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="1" author="IV">
+        <comment>Create user table</comment>
+        <sql>
+            CREATE TABLE IF NOT EXISTS usr (
+                id bigint NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                first_name varchar(20) NOT NULL,
+                last_name varchar(40) NOT NULL,
+                patronymic varchar(40) NOT NULL,
+                email varchar(50) NOT NULL UNIQUE
+            );
+            ALTER TABLE usr
+                ADD CONSTRAINT mail_validation
+                    CHECK (email REGEXP '^[A-Za-z]{1}[a-zA-Z0-9.-_]+@[A-Za-z0-9.-]+[.][A-Za-z]+$');
+            ALTER TABLE usr
+                ADD CONSTRAINT latin_only_first_name
+                    CHECK (first_name REGEXP '^[A-Za-z]');
+            ALTER TABLE usr
+                ADD CONSTRAINT latin_only_last_name
+                    CHECK (last_name REGEXP '^[A-Za-z]');
+            ALTER TABLE usr
+                ADD CONSTRAINT latin_only_patronymic
+                    CHECK (patronymic REGEXP '^[A-Za-z]');
+        </sql>
+    </changeSet>
+
+    <changeSet id="2" author="IV">
+        <comment>Create user_role table</comment>
+        <sql>
+            CREATE TABLE IF NOT EXISTS user_role
+            (
+                user_id bigint REFERENCES usr(id),
+                r_name varchar(50) NOT NULL UNIQUE
+            );
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
