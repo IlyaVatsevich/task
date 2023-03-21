@@ -34,7 +34,7 @@
             CREATE TABLE IF NOT EXISTS user_role
             (
                 user_id bigint REFERENCES usr(id),
-                r_name varchar(50) NOT NULL UNIQUE
+                r_name varchar(50) NOT NULL
             );
         </sql>
     </changeSet>

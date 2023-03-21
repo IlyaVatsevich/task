@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
@@ -29,8 +30,15 @@ import java.util.Set;
 @Table(name = "usr")
 public class User {
 
+    @RequiredArgsConstructor
+    @Getter
     public enum UserRole {
-        ADMINISTRATOR, SALE_USER, CUSTOMER_USER, SECURE_API_USER
+        ADMINISTRATOR("Administrator"),
+        SALE_USER("Sale User"),
+        CUSTOMER_USER("Customer User"),
+        SECURE_API_USER("Secure API User");
+
+        private final String idName;
     }
 
     @Id
@@ -53,6 +61,6 @@ public class User {
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id",referencedColumnName = "id",nullable = false))
     @Enumerated(EnumType.STRING)
     @Column(name = "r_name")
-    private Set<UserRole> userRole;
+    private Set<UserRole> userRoles;
 
 }

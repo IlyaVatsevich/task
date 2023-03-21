@@ -6,8 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.orm.jpa.JpaSystemException;
 
-import java.util.Set;
-
+import static by.ilya_vatsevich.bootcamp_task.util.UserGenerator.createUser;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest(properties = "spring.profiles.active = test")
@@ -35,15 +34,5 @@ class UserRepositoryTest {
         userWithNonLatinCharactersInFirstName.setFirstName("Илья");
         assertThrows(JpaSystemException.class,()->userRepository.save(userWithNonLatinCharactersInFirstName));
     }
-
-    private User createUser() {
-        return User.builder().withEmail("user1@yopmail.com")
-                .withUserRole(Set.of(User.UserRole.ADMINISTRATOR))
-                .withFirstName("Ilya")
-                .withLastName("Vatsevich")
-                .withPatronymic("Olegovich").build();
-    }
-
-
 
 }
