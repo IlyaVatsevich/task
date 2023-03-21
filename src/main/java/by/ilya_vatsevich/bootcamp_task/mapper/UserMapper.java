@@ -5,6 +5,7 @@ import by.ilya_vatsevich.bootcamp_task.dto.UserResponseDto;
 import by.ilya_vatsevich.bootcamp_task.entity.User;
 import org.springframework.stereotype.Component;
 
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -15,10 +16,7 @@ public class UserMapper {
                 .withEmail(userRequestDto.getEmail())
                 .withLastName(userRequestDto.getLastName())
                 .withFirstName(userRequestDto.getFirstName())
-                .withUserRoles(userRequestDto.getRoles()
-                        .stream()
-                        .map(s -> User.UserRole.valueOf(s.toUpperCase()))
-                        .collect(Collectors.toUnmodifiableSet()))
+                .withUserRoles(mapRoles(userRequestDto.getRoles()))
                 .build();
     }
 
@@ -31,5 +29,19 @@ public class UserMapper {
                         .collect(Collectors.toUnmodifiableSet()))
                 .withFirstLastPatronymic(user.getLastName() + " " + user.getFirstName() + " " + user.getPatronymic())
                 .build();
+    }
+
+    private Set<User.UserRole> mapRoles(Set<String> roles) {
+        return roles.stream().map(role -> {
+            switch (role) {
+                case "Administrator":
+                    return User.UserRole.ADMINISTRATOR;
+                case "Sale user":
+                    return User.UserRole.SALE_USER;
+                case "Customer User":
+                    return User.UserRole.CUSTOMER_USER;
+                default: return User.UserRole.SECURE_API_USER;
+            }
+        }).collect(Collectors.toUnmodifiableSet());
     }
 }

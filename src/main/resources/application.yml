@@ -9,5 +9,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
+  jackson:
+    property-naming-strategy: SNAKE_CASE
 server:
   port: 8080
